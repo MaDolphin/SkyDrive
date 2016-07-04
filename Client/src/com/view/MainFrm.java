@@ -95,8 +95,7 @@ public class MainFrm extends JFrame implements ActionListener {
         rightpane.add(tool, BorderLayout.NORTH);
         refreshButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                dispFiles(dao.ListFiles("listfiles", userNo, nowfolder));
-                mainpane.repaint();
+                refresh_clicked(e);
             }
         });
         addFolderButton.addActionListener(new ActionListener() {
@@ -137,26 +136,58 @@ public class MainFrm extends JFrame implements ActionListener {
 
     }
 
+    private void refresh_clicked(ActionEvent e) {
+        this.dispFiles(dao.ListFiles("listfiles", this.userNo, nowfolder));
+        mainpane.repaint();
+    }
+
     private void initTree() {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("我的云盘");
-        DefaultMutableTreeNode m1 = new DefaultMutableTreeNode("我的图片");
-
-        DefaultMutableTreeNode m2 = new DefaultMutableTreeNode("我的视频");
+        DefaultMutableTreeNode m1 = new DefaultMutableTreeNode("我的资源");
+        DefaultMutableTreeNode m2 = new DefaultMutableTreeNode("我的分享");
         DefaultMutableTreeNode m3 = new DefaultMutableTreeNode("回收站");
-        m1.add(new DefaultMutableTreeNode("主页"));
-        m2.add(new DefaultMutableTreeNode("视频管理"));
+        DefaultMutableTreeNode n0=new DefaultMutableTreeNode("主页");
+        DefaultMutableTreeNode n1=new DefaultMutableTreeNode("全部文件");
+        DefaultMutableTreeNode n2=new DefaultMutableTreeNode("图片");
+        DefaultMutableTreeNode n3=new DefaultMutableTreeNode("文档");
+        DefaultMutableTreeNode n4=new DefaultMutableTreeNode("视频");
+        DefaultMutableTreeNode n5=new DefaultMutableTreeNode("音乐");
+        m1.add(n0);m1.add(n1);m1.add(n2);m1.add(n3);m1.add(n4);m1.add(n5);
+        m2.add(new DefaultMutableTreeNode("查看分享文件"));
         m3.add(new DefaultMutableTreeNode("查看回收站"));
-        root.add(m1);
-        root.add(m2);
-        root.add(m3);
-        tree = new JTree(root);
-        tree.addTreeSelectionListener(new TreeSelectionListener() {
+        root.add(m1);root.add(m2);root.add(m3);
+        tree=new JTree(root);
+
+        tree.addTreeSelectionListener(new TreeSelectionListener(){
             @Override
             public void valueChanged(TreeSelectionEvent e) {
-                tree_clicked(e);
+                DefaultMutableTreeNode selectionNode=(DefaultMutableTreeNode)tree.getLastSelectedPathComponent();
+                if(selectionNode.isLeaf()){ //叶子节点的监听
+                    tree_clicked(selectionNode.toString());
+                }
+                if(selectionNode.isRoot()){ //根节点的监听
+                    tree_clicked(selectionNode.toString());
+                }
             }
-
         });
+//        DefaultMutableTreeNode m1 = new DefaultMutableTreeNode("我的图片");
+//
+//        DefaultMutableTreeNode m2 = new DefaultMutableTreeNode("我的视频");
+//        DefaultMutableTreeNode m3 = new DefaultMutableTreeNode("回收站");
+//        m1.add(new DefaultMutableTreeNode("主页"));
+//        m2.add(new DefaultMutableTreeNode("视频管理"));
+//        m3.add(new DefaultMutableTreeNode("查看回收站"));
+//        root.add(m1);
+//        root.add(m2);
+//        root.add(m3);
+//        tree = new JTree(root);
+//        tree.addTreeSelectionListener(new TreeSelectionListener() {
+//            @Override
+//            public void valueChanged(TreeSelectionEvent e) {
+//                tree_clicked(e);
+//            }
+//
+//        });
     }
 
 
@@ -297,9 +328,34 @@ public class MainFrm extends JFrame implements ActionListener {
         return menu;
     }
 
-    private void tree_clicked(TreeSelectionEvent e) {
-
-        this.dispFiles(dao.ListFiles("listfiles", this.userNo, 0));
+    private void tree_clicked(String event) {
+        if("我的云盘".equals(event)){
+            this.dispFiles(dao.ListFiles("listfiles", this.userNo, 0));
+        }
+        if("查看分享文件".equals(event)){
+            this.dispFiles(dao.ListFiles("listSharefiles", this.userNo, 0));
+        }
+        if("查看回收站".equals(event)){
+            this.dispFiles(dao.ListFiles("listDelfiles", this.userNo, 0));
+        }
+        if("主页".equals(event)){
+            this.dispFiles(dao.ListFiles("listfiles", this.userNo, 0));
+        }
+        if("全部文件".equals(event)){
+            this.dispFiles(dao.ListFiles("listAllfiles", this.userNo, 0));
+        }
+        if("图片".equals(event)){
+            this.dispFiles(dao.ListFiles("listImgfiles", this.userNo, 0));
+        }
+        if("文件".equals(event)){
+            this.dispFiles(dao.ListFiles("listDocfiles", this.userNo, 0));
+        }
+        if("视频".equals(event)){
+            this.dispFiles(dao.ListFiles("listFilmfiles", this.userNo, 0));
+        }
+        if("音乐".equals(event)){
+            this.dispFiles(dao.ListFiles("listMusicfiles", this.userNo, 0));
+        }
         mainpane.repaint();
         supfolder = 0;
         nowfolder = 0;

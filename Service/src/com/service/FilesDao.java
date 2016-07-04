@@ -123,6 +123,80 @@ public class FilesDao {
         return list;
     }
 
+    public List<Files> queryAllShareFile(int userNo,int folder){
+        Session session = HibernateSessionFactory.getSession();
+        Query query = session.createQuery("from Files f where f.userNo=:userNo and f.fileStatus=:filestatus and f.fileType = 1 and f.shareStatus = 1 order by f.fileFormat,f.fileNo");
+        query.setParameter("userNo",userNo);
+        query.setParameter("filestatus",1);
+        List<Files> list = query.list();
+        return list;
+    }
+
+    public List<Files> queryAllDelFile(int userNo,int folder){
+        Session session = HibernateSessionFactory.getSession();
+        Query query = session.createQuery("from Files f where f.userNo=:userNo and f.fileStatus=:filestatus and f.fileType = 1 order by f.fileFormat,f.fileNo");
+        query.setParameter("userNo",userNo);
+        query.setParameter("filestatus",0);
+        List<Files> list = query.list();
+        return list;
+    }
+
+    public List<Files> queryAllFile(int userNo,int folder){
+        Session session = HibernateSessionFactory.getSession();
+        Query query = session.createQuery("from Files f where f.userNo=:userNo and f.fileStatus=:filestatus and f.fileType = 1 order by f.fileFormat,f.fileNo");
+        query.setParameter("userNo",userNo);
+        query.setParameter("filestatus",1);
+        List<Files> list = query.list();
+        return list;
+    }
+
+    public List<Files> queryAllImgFile(int userNo,int folder){
+        Session session = HibernateSessionFactory.getSession();
+        Query query = session.createQuery("from Files f where f.userNo=:userNo and f.fileStatus=:filestatus and f.fileType = 1" +
+                " and (f.fileFormat = 'jpg' or f.fileFormat = 'bmp' or f.fileFormat = 'png')" +
+                " order by f.fileFormat,f.fileNo");
+        query.setParameter("userNo",userNo);
+        query.setParameter("filestatus",1);
+        List<Files> list = query.list();
+        return list;
+    }
+
+    public List<Files> queryAllDocFile(int userNo, int folder) {
+        Session session = HibernateSessionFactory.getSession();
+//        Query query = session.createQuery("from Files f where f.userNo=:userNo and f.fileStatus=:filestatus and f.fileType = 1" +
+//                " and (f.fileFormat = 'doc' or f.fileFormat = 'docx' or f.fileFormat = 'xls' or f.fileFormat = 'xlsx' or f.fileFormat = 'ppt' or f.fileFormat = 'pptx' or f.fileFormat = 'txt')" +
+//                " order by f.fileFormat,f.fileNo");
+        Query query = session.createQuery("from Files f where f.userNo=:userNo and f.fileStatus=:filestatus and f.fileType = 1" +
+                " and (f.fileFormat = 'doc' or f.fileFormat = 'docx' or f.fileFormat = 'txt')" +
+                " order by f.fileFormat,f.fileNo");
+        query.setParameter("userNo", userNo);
+        query.setParameter("filestatus", 1);
+        List<Files> list = query.list();
+        return list;
+    }
+
+    public List<Files> queryAllFilmFile(int userNo,int folder){
+        Session session = HibernateSessionFactory.getSession();
+        Query query = session.createQuery("from Files f where f.userNo=:userNo and f.fileStatus=:filestatus and f.fileType = 1" +
+                " and (f.fileFormat = 'avi' or f.fileFormat = 'rmvb')" +
+                " order by f.fileFormat,f.fileNo");
+        query.setParameter("userNo",userNo);
+        query.setParameter("filestatus",1);
+        List<Files> list = query.list();
+        return list;
+    }
+
+    public List<Files> queryAllMusicFile(int userNo,int folder){
+        Session session = HibernateSessionFactory.getSession();
+        Query query = session.createQuery("from Files f where f.userNo=:userNo and f.fileStatus=:filestatus and f.fileType = 1" +
+                " and (f.fileFormat = 'mp3' or f.fileFormat = 'wav')" +
+                " order by f.fileFormat,f.fileNo");
+        query.setParameter("userNo",userNo);
+        query.setParameter("filestatus",1);
+        List<Files> list = query.list();
+        return list;
+    }
+
 
     public List<Files> queryFileNoInPathByFileName(int userNo,int folder,String fileName){
         Session session = HibernateSessionFactory.getSession();

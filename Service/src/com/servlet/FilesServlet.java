@@ -46,6 +46,188 @@ public class FilesServlet extends HttpServlet {
             }
             out.println("</files>");
         }
+        if ("listAllfiles".equals(opttype)) {
+            FilesDao filesDao = new FilesDao();
+            response.setContentType("application/xml;charset=utf-8");
+            int user = Integer.valueOf(request.getParameter("UserNo"));
+            int path = Integer.valueOf(request.getParameter("SupFolder"));
+            List<Files> files = filesDao.queryAllFile(user, path);
+            out.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+            out.println("<files>");
+            for (Files file : files) {
+                if (file.getFileType() == 1) {
+                    out.println(" <file type=\"file\">");
+                    out.println("   <path>" + file.getFilePath() + "</path>");
+                    out.println("   <no>" + file.getFileNo() + "</no>");
+                    out.println("   <name>" + file.getFileName() + "</name>");
+                    out.println("   <ext>" + file.getFileFormat() + "</ext>");
+                    out.println(" </file>");
+                } else {
+                    out.println(" <file type=\"dir\">");
+                    out.println("   <path>" + file.getFilePath() + "</path>");
+                    out.println("   <no>" + file.getFileNo() + "</no>");
+                    out.println("   <name>" + file.getFileName() + "</name>");
+                    out.println(" </file>");
+                }
+            }
+            out.println("</files>");
+        }
+        if ("listImgfiles".equals(opttype)) {
+            FilesDao filesDao = new FilesDao();
+            response.setContentType("application/xml;charset=utf-8");
+            int user = Integer.valueOf(request.getParameter("UserNo"));
+            int path = Integer.valueOf(request.getParameter("SupFolder"));
+            List<Files> files = filesDao.queryAllImgFile(user, path);
+            out.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+            out.println("<files>");
+            for (Files file : files) {
+                if (file.getFileType() == 1) {
+                    out.println(" <file type=\"file\">");
+                    out.println("   <path>" + file.getFilePath() + "</path>");
+                    out.println("   <no>" + file.getFileNo() + "</no>");
+                    out.println("   <name>" + file.getFileName() + "</name>");
+                    out.println("   <ext>" + file.getFileFormat() + "</ext>");
+                    out.println(" </file>");
+                } else {
+                    out.println(" <file type=\"dir\">");
+                    out.println("   <path>" + file.getFilePath() + "</path>");
+                    out.println("   <no>" + file.getFileNo() + "</no>");
+                    out.println("   <name>" + file.getFileName() + "</name>");
+                    out.println(" </file>");
+                }
+            }
+            out.println("</files>");
+        }
+        if ("listDocfiles".equals(opttype)) {
+            FilesDao filesDao = new FilesDao();
+            response.setContentType("application/xml;charset=utf-8");
+            int user = Integer.valueOf(request.getParameter("UserNo"));
+            int path = Integer.valueOf(request.getParameter("SupFolder"));
+            List<Files> files = filesDao.queryAllDocFile(user, path);
+            out.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+            out.println("<files>");
+            for (Files file : files) {
+                if (file.getFileType() == 1) {
+                    out.println(" <file type=\"file\">");
+                    out.println("   <path>" + file.getFilePath() + "</path>");
+                    out.println("   <no>" + file.getFileNo() + "</no>");
+                    out.println("   <name>" + file.getFileName() + "</name>");
+                    out.println("   <ext>" + file.getFileFormat() + "</ext>");
+                    out.println(" </file>");
+                } else {
+                    out.println(" <file type=\"dir\">");
+                    out.println("   <path>" + file.getFilePath() + "</path>");
+                    out.println("   <no>" + file.getFileNo() + "</no>");
+                    out.println("   <name>" + file.getFileName() + "</name>");
+                    out.println(" </file>");
+                }
+            }
+            out.println("</files>");
+        }
+        if ("listFilmfiles".equals(opttype)) {
+            FilesDao filesDao = new FilesDao();
+            response.setContentType("application/xml;charset=utf-8");
+            int user = Integer.valueOf(request.getParameter("UserNo"));
+            int path = Integer.valueOf(request.getParameter("SupFolder"));
+            List<Files> files = filesDao.queryAllFilmFile(user, path);
+            out.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+            out.println("<files>");
+            for (Files file : files) {
+                if (file.getFileType() == 1) {
+                    out.println(" <file type=\"file\">");
+                    out.println("   <path>" + file.getFilePath() + "</path>");
+                    out.println("   <no>" + file.getFileNo() + "</no>");
+                    out.println("   <name>" + file.getFileName() + "</name>");
+                    out.println("   <ext>" + file.getFileFormat() + "</ext>");
+                    out.println(" </file>");
+                } else {
+                    out.println(" <file type=\"dir\">");
+                    out.println("   <path>" + file.getFilePath() + "</path>");
+                    out.println("   <no>" + file.getFileNo() + "</no>");
+                    out.println("   <name>" + file.getFileName() + "</name>");
+                    out.println(" </file>");
+                }
+            }
+            out.println("</files>");
+        }
+        if ("listMusicfiles".equals(opttype)) {
+            FilesDao filesDao = new FilesDao();
+            response.setContentType("application/xml;charset=utf-8");
+            int user = Integer.valueOf(request.getParameter("UserNo"));
+            int path = Integer.valueOf(request.getParameter("SupFolder"));
+            List<Files> files = filesDao.queryAllMusicFile(user, path);
+            out.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+            out.println("<files>");
+            for (Files file : files) {
+                if (file.getFileType() == 1) {
+                    out.println(" <file type=\"file\">");
+                    out.println("   <path>" + file.getFilePath() + "</path>");
+                    out.println("   <no>" + file.getFileNo() + "</no>");
+                    out.println("   <name>" + file.getFileName() + "</name>");
+                    out.println("   <ext>" + file.getFileFormat() + "</ext>");
+                    out.println(" </file>");
+                } else {
+                    out.println(" <file type=\"dir\">");
+                    out.println("   <path>" + file.getFilePath() + "</path>");
+                    out.println("   <no>" + file.getFileNo() + "</no>");
+                    out.println("   <name>" + file.getFileName() + "</name>");
+                    out.println(" </file>");
+                }
+            }
+            out.println("</files>");
+        }
+        if ("listSharefiles".equals(opttype)) {
+            FilesDao filesDao = new FilesDao();
+            response.setContentType("application/xml;charset=utf-8");
+            int user = Integer.valueOf(request.getParameter("UserNo"));
+            int path = Integer.valueOf(request.getParameter("SupFolder"));
+            List<Files> files = filesDao.queryAllShareFile(user, path);
+            out.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+            out.println("<files>");
+            for (Files file : files) {
+                if (file.getFileType() == 1) {
+                    out.println(" <file type=\"file\">");
+                    out.println("   <path>" + file.getFilePath() + "</path>");
+                    out.println("   <no>" + file.getFileNo() + "</no>");
+                    out.println("   <name>" + file.getFileName() + "</name>");
+                    out.println("   <ext>" + file.getFileFormat() + "</ext>");
+                    out.println(" </file>");
+                } else {
+                    out.println(" <file type=\"dir\">");
+                    out.println("   <path>" + file.getFilePath() + "</path>");
+                    out.println("   <no>" + file.getFileNo() + "</no>");
+                    out.println("   <name>" + file.getFileName() + "</name>");
+                    out.println(" </file>");
+                }
+            }
+            out.println("</files>");
+        }
+        if ("listDelfiles".equals(opttype)) {
+            FilesDao filesDao = new FilesDao();
+            response.setContentType("application/xml;charset=utf-8");
+            int user = Integer.valueOf(request.getParameter("UserNo"));
+            int path = Integer.valueOf(request.getParameter("SupFolder"));
+            List<Files> files = filesDao.queryAllDelFile(user, path);
+            out.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+            out.println("<files>");
+            for (Files file : files) {
+                if (file.getFileType() == 1) {
+                    out.println(" <file type=\"file\">");
+                    out.println("   <path>" + file.getFilePath() + "</path>");
+                    out.println("   <no>" + file.getFileNo() + "</no>");
+                    out.println("   <name>" + file.getFileName() + "</name>");
+                    out.println("   <ext>" + file.getFileFormat() + "</ext>");
+                    out.println(" </file>");
+                } else {
+                    out.println(" <file type=\"dir\">");
+                    out.println("   <path>" + file.getFilePath() + "</path>");
+                    out.println("   <no>" + file.getFileNo() + "</no>");
+                    out.println("   <name>" + file.getFileName() + "</name>");
+                    out.println(" </file>");
+                }
+            }
+            out.println("</files>");
+        }
         if ("checkmd5".equals(opttype)) {
             FilesDao filesDao = new FilesDao();
             String hash = request.getParameter("Md5");
