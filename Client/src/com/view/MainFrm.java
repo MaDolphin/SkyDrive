@@ -170,24 +170,6 @@ public class MainFrm extends JFrame implements ActionListener {
                 }
             }
         });
-//        DefaultMutableTreeNode m1 = new DefaultMutableTreeNode("我的图片");
-//
-//        DefaultMutableTreeNode m2 = new DefaultMutableTreeNode("我的视频");
-//        DefaultMutableTreeNode m3 = new DefaultMutableTreeNode("回收站");
-//        m1.add(new DefaultMutableTreeNode("主页"));
-//        m2.add(new DefaultMutableTreeNode("视频管理"));
-//        m3.add(new DefaultMutableTreeNode("查看回收站"));
-//        root.add(m1);
-//        root.add(m2);
-//        root.add(m3);
-//        tree = new JTree(root);
-//        tree.addTreeSelectionListener(new TreeSelectionListener() {
-//            @Override
-//            public void valueChanged(TreeSelectionEvent e) {
-//                tree_clicked(e);
-//            }
-//
-//        });
     }
 
 
