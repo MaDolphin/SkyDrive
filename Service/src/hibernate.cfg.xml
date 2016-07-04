@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="connection.url">jdbc:mysql://121.42.197.31:3306/SkyDrive</property>
+        <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="connection.username">hhk</property>
+        <property name="connection.password">1234</property>
+        <property name="hibernate.c3p0.min_size">5</property>
+        <property name="hibernate.c3p0.max_size">20</property>
+        <!--<property name="hibernate.c3p0.timeout">3600</property>-->
+        <property name="hibernate.c3p0.max_statements">50</property>
+        <property name="hibernate.c3p0.testConnectionOnCheckout">true</property>
+
+        <!-- 显示sql语句 -->
+        <property name="show_sql">true</property>
+        <property name="connection.useUnicode">true</property>
+        <property name="connection.characterEncoding">UTF-8</property>
+
+        <!-- 缓存设置 -->
+        <!--<property name="cache.provider_configuration_file_resource_path">/ehcache.xml</property>-->
+        <!--<property name="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</property>-->
+        <!--<property name="cache.use_query_cache">true</property>-->
+
+        <mapping class="com.entity.Files"/>
+        <mapping class="com.entity.User"/>
+        <!-- DB schema will be updated if needed -->
+        <!-- <property name="hbm2ddl.auto">update</property> -->
+    </session-factory>
+</hibernate-configuration>
