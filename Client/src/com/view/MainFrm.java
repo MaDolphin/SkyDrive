@@ -338,7 +338,28 @@ public class MainFrm extends JFrame implements ActionListener {
 
             }
         });
-
+        menu.add(new JMenuItem("‰Ø¿¿≤•∑≈")).addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int splitIndex = filename.lastIndexOf(".");
+                String fileformat = filename.substring(splitIndex + 1);
+                if(fileformat.equals("mp3")){
+                    try {
+                        String filePath = dao.MediaDownload("download", fileno, filename, null,1);
+                        if(filePath != null){
+                            JFrame.setDefaultLookAndFeelDecorated(true);
+                            MediaFrm mediaFrm = new MediaFrm(filePath,filename);
+                            mediaFrm.setSize(280, 180);
+                            mediaFrm.setVisible(true);
+                        }
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    } catch (Exception e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            }
+        });
         return menu;
     }
 

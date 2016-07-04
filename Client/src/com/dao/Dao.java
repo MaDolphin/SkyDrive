@@ -135,7 +135,24 @@ public class Dao {
     }
 
     //下载文件
-    public String Download(String opttype, int fileno,String fileName,String savePath) throws IOException {
+    public String Download(String opttype, int fileno, String fileName, String savePath) throws IOException {
+        // 创建httppost
+        HttpPost httppost = new HttpPost("http://localhost:8080/SkyDrive/servlet/DownloadServlet");
+        // 创建参数队列
+        List<BasicNameValuePair> formparams = new ArrayList<BasicNameValuePair>();
+        formparams.add(new BasicNameValuePair("fileNo", String.valueOf(fileno)));
+        formparams.add(new BasicNameValuePair("opttype", opttype));
+        String downLoadPath = this.GetEntity(httppost, formparams);
+        downLoadPath = downLoadPath.substring(0, downLoadPath.length() - 2);
+        System.out.println("DownLoadPath:" + downLoadPath);
+        if (this.DownMethod(downLoadPath, savePath, fileName) == true) {
+            return "success";
+        } else {
+            return "error";
+        }
+    }
+
+    public String MediaDownload(String opttype, int fileno,String fileName,String savePath,int otptype) throws IOException {
         // 创建httppost
         HttpPost httppost = new HttpPost("http://localhost:8080/SkyDrive/servlet/DownloadServlet");
         // 创建参数队列
@@ -145,14 +162,18 @@ public class Dao {
         String downLoadPath =  this.GetEntity(httppost, formparams);
         downLoadPath = downLoadPath.substring(0, downLoadPath.length() - 2);
         System.out.println("DownLoadPath:"+downLoadPath);
+        Properties prop = System.getProperties();
+        savePath = "C:\\Users\\"+prop.getProperty("user.name")+"\\Downloads"+"\\temp";
         if(this.DownMethod(downLoadPath,savePath,fileName) == true){
-            return "success";
+            return savePath+"\\"+fileName;
         }else {
-            return "error";
+            return null;
         }
+
     }
 
     public Boolean DownMethod(String downpath,String savepath,String fileName) throws IOException{
+        System.out.println(savepath);
         try{
             HttpClient httpclient = new DefaultHttpClient();
             HttpPost post = new HttpPost(downpath);
@@ -170,38 +191,6 @@ public class Dao {
                     }
                     output.flush();
                     output.close();
-                }
-            }
-            return true;
-        }catch (Exception e){
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    public Boolean MediaDownMethod(String downpath,String fileName,String type) throws IOException{
-        Properties prop = System.getProperties();
-        String savepath = "C:\\Users\\"+prop.getProperty("user.name")+"\\Documents"+"\\SkyDrive";
-        try{
-            HttpClient httpclient = new DefaultHttpClient();
-            HttpPost post = new HttpPost(downpath);
-            HttpResponse response = httpclient.execute(post);
-            if(HttpStatus.SC_OK==response.getStatusLine().getStatusCode()){
-                HttpEntity entity = response.getEntity();
-                if (entity != null) {
-                    File storeFile = new File(savepath);
-                    FileOutputStream output = new FileOutputStream(storeFile);
-                    InputStream input = entity.getContent();
-                    byte b[] = new byte[1024];
-                    int j = 0;
-                    while( (j = input.read(b))!=-1){
-                        output.write(b,0,j);
-                    }
-                    output.flush();
-                    output.close();
-                    if("music".equals(type)){
-                        MediaFrm mediaFrm = new MediaFrm(storeFile.getName(),fileName);
-                    }
                 }
             }
             return true;

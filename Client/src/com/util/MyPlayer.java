@@ -33,15 +33,4 @@ public class MyPlayer {
         line.drain();
         line.close();
     }
-
-    public static void main(String[] args) throws Exception {
-        byte[]  buffer = new byte[BUFFER_SIZE];
-
-        JFileChooser jfc = new JFileChooser();
-        jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        jfc.showDialog(new JLabel(), "选择上传文件");
-        File file = jfc.getSelectedFile();
-        File soundFile = new File(file.getAbsolutePath());
-
-    }
 }
