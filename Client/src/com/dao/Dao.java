@@ -296,5 +296,15 @@ public class Dao {
         }
     }
 
-
+    //全局模糊搜索
+    public String Search(String opttype, int userNo, String text) {
+        // 创建httppost
+        HttpPost httppost = new HttpPost("http://localhost:8080/SkyDrive/file.action");
+        // 创建参数队列
+        List<BasicNameValuePair> formparams = new ArrayList<BasicNameValuePair>();
+        formparams.add(new BasicNameValuePair("UserNo", String.valueOf(userNo)));
+        formparams.add(new BasicNameValuePair("FileName", text));
+        formparams.add(new BasicNameValuePair("opttype", opttype));
+        return this.GetEntity(httppost, formparams);
+    }
 }

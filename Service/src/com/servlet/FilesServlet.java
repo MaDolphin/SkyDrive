@@ -386,6 +386,33 @@ public class FilesServlet extends HttpServlet {
             }
 
         }
+
+        //ËÑË÷ÎÄ¼þ
+        if ("share".equals(opttype)) {
+            int user = Integer.valueOf(request.getParameter("UserNo"));
+            String filename=request.getParameter("FileName");
+            FilesDao filesDao = new FilesDao();
+            List<Files>filesList=filesDao.queryLikeFileInAllPath(user,filename);
+            out.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+            out.println("<files>");
+            for (Files file : filesList) {
+                if (file.getFileType() == 1) {
+                    out.println(" <file type=\"file\">");
+                    out.println("   <path>" + file.getFilePath() + "</path>");
+                    out.println("   <no>" + file.getFileNo() + "</no>");
+                    out.println("   <name>" + file.getFileName() + "</name>");
+                    out.println("   <ext>" + file.getFileFormat() + "</ext>");
+                    out.println(" </file>");
+                } else {
+                    out.println(" <file type=\"dir\">");
+                    out.println("   <path>" + file.getFilePath() + "</path>");
+                    out.println("   <no>" + file.getFileNo() + "</no>");
+                    out.println("   <name>" + file.getFileName() + "</name>");
+                    out.println(" </file>");
+                }
+            }
+            out.println("</files>");
+        }
         out.close();
     }
 

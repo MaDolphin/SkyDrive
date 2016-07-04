@@ -32,13 +32,14 @@ public class MainFrm extends JFrame implements ActionListener {
     private JTree tree = null;
     private JPanel rightpane = new JPanel();
     private JPanel mainpane = new JPanel();
-
+    private JTextField txt = new JTextField();
+    private JButton btn = new JButton("搜索");
     private Dao dao = new Dao();
     private int userNo, fileno, copyno, nowfolder;
     private int supfolder = 0;
-    private String path,filename;
+    private String path, filename;
 
-    public MainFrm(String rvalue, int userNo, int nowfolder) {
+    public MainFrm(String rvalue, final int userNo, int nowfolder) {
         this.userNo = userNo;
         this.nowfolder = nowfolder;
         this.path = "../" + userNo;
@@ -53,13 +54,23 @@ public class MainFrm extends JFrame implements ActionListener {
             //右键文件创建右键菜单
             public void mouseReleased(MouseEvent e) {
                 if (e.isPopupTrigger()) {
-                    menu.show(mainpane, e.getX() , e.getY() );
+                    menu.show(mainpane, e.getX(), e.getY());
                 }
             }
         });
 
         initTree();
         initToolBar();
+        btn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (txt.getText() .equals("")) {
+                    String result = dao.Search("search", userNo, txt.getText());
+                    dispFiles(result);
+                    mainpane.repaint();
+                }
+            }
+        });
         JSplitPane jsplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JScrollPane(tree), rightpane);
         jsplit.setDividerLocation(300);
         jsplit.setDividerSize(2);
@@ -90,6 +101,8 @@ public class MainFrm extends JFrame implements ActionListener {
         toolbar.add(addFolderButton);
         toolbar.add(addFileButton);
         toolbar.add(refreshButton);
+        toolbar.add(btn);
+        toolbar.add(txt);
         toolbar.setFloatable(false);
         tool.add(toolbar);
         rightpane.add(tool, BorderLayout.NORTH);
@@ -146,26 +159,33 @@ public class MainFrm extends JFrame implements ActionListener {
         DefaultMutableTreeNode m1 = new DefaultMutableTreeNode("我的资源");
         DefaultMutableTreeNode m2 = new DefaultMutableTreeNode("我的分享");
         DefaultMutableTreeNode m3 = new DefaultMutableTreeNode("回收站");
-        DefaultMutableTreeNode n0=new DefaultMutableTreeNode("主页");
-        DefaultMutableTreeNode n1=new DefaultMutableTreeNode("全部文件");
-        DefaultMutableTreeNode n2=new DefaultMutableTreeNode("图片");
-        DefaultMutableTreeNode n3=new DefaultMutableTreeNode("文档");
-        DefaultMutableTreeNode n4=new DefaultMutableTreeNode("视频");
-        DefaultMutableTreeNode n5=new DefaultMutableTreeNode("音乐");
-        m1.add(n0);m1.add(n1);m1.add(n2);m1.add(n3);m1.add(n4);m1.add(n5);
+        DefaultMutableTreeNode n0 = new DefaultMutableTreeNode("主页");
+        DefaultMutableTreeNode n1 = new DefaultMutableTreeNode("全部文件");
+        DefaultMutableTreeNode n2 = new DefaultMutableTreeNode("图片");
+        DefaultMutableTreeNode n3 = new DefaultMutableTreeNode("文档");
+        DefaultMutableTreeNode n4 = new DefaultMutableTreeNode("视频");
+        DefaultMutableTreeNode n5 = new DefaultMutableTreeNode("音乐");
+        m1.add(n0);
+        m1.add(n1);
+        m1.add(n2);
+        m1.add(n3);
+        m1.add(n4);
+        m1.add(n5);
         m2.add(new DefaultMutableTreeNode("查看分享文件"));
         m3.add(new DefaultMutableTreeNode("查看回收站"));
-        root.add(m1);root.add(m2);root.add(m3);
-        tree=new JTree(root);
+        root.add(m1);
+        root.add(m2);
+        root.add(m3);
+        tree = new JTree(root);
 
-        tree.addTreeSelectionListener(new TreeSelectionListener(){
+        tree.addTreeSelectionListener(new TreeSelectionListener() {
             @Override
             public void valueChanged(TreeSelectionEvent e) {
-                DefaultMutableTreeNode selectionNode=(DefaultMutableTreeNode)tree.getLastSelectedPathComponent();
-                if(selectionNode.isLeaf()){ //叶子节点的监听
+                DefaultMutableTreeNode selectionNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
+                if (selectionNode.isLeaf()) { //叶子节点的监听
                     tree_clicked(selectionNode.toString());
                 }
-                if(selectionNode.isRoot()){ //根节点的监听
+                if (selectionNode.isRoot()) { //根节点的监听
                     tree_clicked(selectionNode.toString());
                 }
             }
@@ -199,30 +219,28 @@ public class MainFrm extends JFrame implements ActionListener {
         menu.add(new JMenuItem("返回上一层")).addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(nowfolder!=0){
-                    if(supfolder==0){
+                if (nowfolder != 0) {
+                    if (supfolder == 0) {
                         dispFiles(dao.ListFiles("listfiles", userNo, 0));
                         mainpane.repaint();
                         supfolder = 0;
                         nowfolder = 0;
                         path = "../" + userNo;
                         //System.out.println("folder:"+nowfolder+" sup:"+supfolder+" path:"+path);
-                    }
-                    else{
+                    } else {
                         dispFiles(dao.ListFiles("listfiles", userNo, supfolder));
                         mainpane.repaint();
                         nowfolder = supfolder;
-                        String t=path.substring(0, path.lastIndexOf("/"));
+                        String t = path.substring(0, path.lastIndexOf("/"));
                         System.out.println(t);
-                        if(!t.equals("../"+userNo+"/"+nowfolder)){
-                            path =path.substring(0, path.lastIndexOf("/"));
-                            supfolder=Integer.valueOf(path.substring(path.lastIndexOf("/")+1));
+                        if (!t.equals("../" + userNo + "/" + nowfolder)) {
+                            path = path.substring(0, path.lastIndexOf("/"));
+                            supfolder = Integer.valueOf(path.substring(path.lastIndexOf("/") + 1));
 
 
-                        }
-                        else{
-                            supfolder=0;
-                            path =path.substring(0, path.lastIndexOf("/"));
+                        } else {
+                            supfolder = 0;
+                            path = path.substring(0, path.lastIndexOf("/"));
                         }
                         /*System.out.println("退出");
                         System.out.println("folder:"+nowfolder+" sup:"+supfolder+" path:"+path);
@@ -248,7 +266,7 @@ public class MainFrm extends JFrame implements ActionListener {
             }
         });
         /*menu.add(new JMenuItem("粘贴")).addActionListener(new ActionListener() {
-			@Override
+            @Override
 			public void actionPerformed(ActionEvent e) {
 				System.out.println(e.getSource());
 				if(fileno==0){
@@ -282,14 +300,14 @@ public class MainFrm extends JFrame implements ActionListener {
         menu.add(new JMenuItem("下载")).addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JFileChooser jfc=new JFileChooser();
+                JFileChooser jfc = new JFileChooser();
                 jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
                 jfc.showDialog(new JLabel(), "选择文件夹");
-                File file=jfc.getSelectedFile();
+                File file = jfc.getSelectedFile();
                 try {
-                    if(dao.Download("download", fileno,filename,file.getAbsolutePath()).equals("success")){
+                    if (dao.Download("download", fileno, filename, file.getAbsolutePath()).equals("success")) {
                         JOptionPane.showMessageDialog(mainpane, "下载成功");
-                    }else {
+                    } else {
                         JOptionPane.showMessageDialog(mainpane, "下载失败");
                     }
                 } catch (IOException e1) {
@@ -306,7 +324,7 @@ public class MainFrm extends JFrame implements ActionListener {
                     JOptionPane.showMessageDialog(mainpane, "取消分享");
                 else
                     JOptionPane.showInputDialog(
-                            this,"http://localhost:8080/SkyDrive/servlet/ShareServlet?FileNo="+fileno);
+                            this, "http://localhost:8080/SkyDrive/servlet/ShareServlet?FileNo=" + fileno);
 
             }
         });
@@ -314,8 +332,8 @@ public class MainFrm extends JFrame implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFrame.setDefaultLookAndFeelDecorated(true);
-                RenameFrm frm=new RenameFrm(fileno);
-                frm.setSize(280,180);
+                RenameFrm frm = new RenameFrm(fileno);
+                frm.setSize(280, 180);
                 frm.setVisible(true);
 
             }
@@ -325,31 +343,31 @@ public class MainFrm extends JFrame implements ActionListener {
     }
 
     private void tree_clicked(String event) {
-        if("我的云盘".equals(event)){
+        if ("我的云盘".equals(event)) {
             this.dispFiles(dao.ListFiles("listfiles", this.userNo, 0));
         }
-        if("查看分享文件".equals(event)){
+        if ("查看分享文件".equals(event)) {
             this.dispFiles(dao.ListFiles("listSharefiles", this.userNo, 0));
         }
-        if("查看回收站".equals(event)){
+        if ("查看回收站".equals(event)) {
             this.dispFiles(dao.ListFiles("listDelfiles", this.userNo, 0));
         }
-        if("主页".equals(event)){
+        if ("主页".equals(event)) {
             this.dispFiles(dao.ListFiles("listfiles", this.userNo, 0));
         }
-        if("全部文件".equals(event)){
+        if ("全部文件".equals(event)) {
             this.dispFiles(dao.ListFiles("listAllfiles", this.userNo, 0));
         }
-        if("图片".equals(event)){
+        if ("图片".equals(event)) {
             this.dispFiles(dao.ListFiles("listImgfiles", this.userNo, 0));
         }
-        if("文件".equals(event)){
+        if ("文件".equals(event)) {
             this.dispFiles(dao.ListFiles("listDocfiles", this.userNo, 0));
         }
-        if("视频".equals(event)){
+        if ("视频".equals(event)) {
             this.dispFiles(dao.ListFiles("listFilmfiles", this.userNo, 0));
         }
-        if("音乐".equals(event)){
+        if ("音乐".equals(event)) {
             this.dispFiles(dao.ListFiles("listMusicfiles", this.userNo, 0));
         }
         mainpane.repaint();
@@ -372,9 +390,9 @@ public class MainFrm extends JFrame implements ActionListener {
             ImageIcon img = new ImageIcon(JLabel.class.getResource(imgpath));
             img.setImage(img.getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_DEFAULT));
             lbl.setIcon(img);
-            if(fname.length()>20){
-                lbl.setText(fname.substring(0,20));
-            }else {
+            if (fname.length() > 20) {
+                lbl.setText(fname.substring(0, 20));
+            } else {
                 lbl.setText(fname);
             }
             lbl.setHorizontalTextPosition(JLabel.CENTER);
@@ -426,9 +444,9 @@ public class MainFrm extends JFrame implements ActionListener {
             ImageIcon img = new ImageIcon(JLabel.class.getResource(imgpath));
             img.setImage(img.getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_DEFAULT));
             lbl.setIcon(img);
-            if(fname.length()>20){
-                lbl.setText(fname.substring(0,20));
-            }else {
+            if (fname.length() > 20) {
+                lbl.setText(fname.substring(0, 20));
+            } else {
                 lbl.setText(fname);
             }
             lbl.setHorizontalTextPosition(JLabel.CENTER);
@@ -444,7 +462,7 @@ public class MainFrm extends JFrame implements ActionListener {
                         System.out.println(src.getText());
                         fileno = Integer.valueOf(dao.getFileNo("fileNo", userNo,
                                 src.getText().substring(0, src.getText().lastIndexOf(".")), nowfolder));
-                        filename=src.getText();
+                        filename = src.getText();
                         //System.out.println(fileno);
                         menu.show(mainpane, src.getX() + 50, src.getY() + 40);
                     }
