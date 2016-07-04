@@ -193,13 +193,27 @@ public class MainFrm extends JFrame implements ActionListener {
                         supfolder = 0;
                         nowfolder = 0;
                         path = "../" + userNo;
+                        System.out.println("folder:"+nowfolder+" sup:"+supfolder+" path:"+path);
                     }
                     else{
                         dispFiles(dao.ListFiles("listfiles", userNo, supfolder));
                         mainpane.repaint();
                         nowfolder = supfolder;
-                        path = path.substring(0, path.lastIndexOf("/"));
-                        supfolder=Integer.valueOf(path.substring(path.lastIndexOf("/")+1));
+                        String t=path.substring(0, path.lastIndexOf("/"));
+                        System.out.println(t);
+                        if(!t.equals("../"+userNo+"/"+nowfolder)){
+                            path =path.substring(0, path.lastIndexOf("/"));
+                            supfolder=Integer.valueOf(path.substring(path.lastIndexOf("/")+1));
+
+
+                        }
+                        else{
+                            supfolder=0;
+                            path =path.substring(0, path.lastIndexOf("/"));
+                        }
+                        System.out.println("ÍË³ö");
+                        System.out.println("folder:"+nowfolder+" sup:"+supfolder+" path:"+path);
+                        System.out.println();
                     }
                 }
             }
@@ -339,6 +353,10 @@ public class MainFrm extends JFrame implements ActionListener {
                         supfolder = nowfolder;
                         nowfolder = fileno;
                         path += "/" + fileno;
+
+                        System.out.println("½øÈë");
+                        System.out.println("folder:"+nowfolder+" sup:"+supfolder+" path:"+path);
+                        System.out.println();
                         dispFiles(dao.ListFiles("listfiles", userNo, fileno));
                         mainpane.repaint();
                     }

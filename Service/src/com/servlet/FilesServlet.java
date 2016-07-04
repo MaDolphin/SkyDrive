@@ -150,22 +150,27 @@ public class FilesServlet extends HttpServlet {
                 out.print("error");
         }
 
-		/*//新建文件夹
+		//新建文件夹
         if("newfolder".equals(opttype)){
 			int user=Integer.valueOf(request.getParameter("UserNo"));
 			int path=Integer.valueOf(request.getParameter("SupFolder"));
-			String filename=request.getParameter("Filename");
 			FilesDao filesDao=new FilesDao();
-			Files supfolder=filesDao.findFile(path);
+
 			Files files=new Files();
 			files.setUserNo(user);
 			files.setFileType(0);
-			files.setFileName("新建文件夹");
+			files.setFileName("999");
 			files.setSupFolder(path);
 			files.setFileStatus(1);
-			files.setFilePath(supfolder.getFilePath()+"/"+path);
+            if(path==0)
+                files.setFilePath("../"+user);
+            else{
+                Files supfolder=filesDao.findFile(path);
+                files.setFilePath(supfolder.getFilePath()+"/"+path);
+            }
+
 			filesDao.addFile(files);
-		}*/
+		}
 
         //重命名
         if ("rename".equals(opttype)) {

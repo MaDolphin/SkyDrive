@@ -102,7 +102,9 @@ public class Dao {
         formparams.add(new BasicNameValuePair("UserNo",String.valueOf(userNo)));
         formparams.add(new BasicNameValuePair("SupFolder", String.valueOf(supFolder)));
         formparams.add(new BasicNameValuePair("opttype", opttype));
-        return this.GetEntity(httppost,formparams);
+        String t=this.GetEntity(httppost,formparams);
+        //System.out.println(t);
+        return t;
     }
 
 
@@ -183,7 +185,7 @@ public class Dao {
         // 创建参数队列
         List<BasicNameValuePair> formparams = new ArrayList<BasicNameValuePair>();
         formparams.add(new BasicNameValuePair("UserNo", String.valueOf(userno)));
-        formparams.add(new BasicNameValuePair("SuoFolder", String.valueOf(supfolder)));
+        formparams.add(new BasicNameValuePair("SupFolder", String.valueOf(supfolder)));
         formparams.add(new BasicNameValuePair("opttype", opttype));
         return this.GetEntity(httppost, formparams);
     }
