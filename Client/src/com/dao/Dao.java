@@ -1,6 +1,7 @@
 package com.dao;
 
 import com.util.Md5CaculateUtil;
+import com.view.MediaFrm;
 import org.apache.http.Consts;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -27,6 +28,7 @@ import java.nio.charset.Charset;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * Created by зе on 2016/7/3.
@@ -168,6 +170,38 @@ public class Dao {
                     }
                     output.flush();
                     output.close();
+                }
+            }
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public Boolean MediaDownMethod(String downpath,String fileName,String type) throws IOException{
+        Properties prop = System.getProperties();
+        String savepath = "C:\\Users\\"+prop.getProperty("user.name")+"\\Documents"+"\\SkyDrive";
+        try{
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpPost post = new HttpPost(downpath);
+            HttpResponse response = httpclient.execute(post);
+            if(HttpStatus.SC_OK==response.getStatusLine().getStatusCode()){
+                HttpEntity entity = response.getEntity();
+                if (entity != null) {
+                    File storeFile = new File(savepath);
+                    FileOutputStream output = new FileOutputStream(storeFile);
+                    InputStream input = entity.getContent();
+                    byte b[] = new byte[1024];
+                    int j = 0;
+                    while( (j = input.read(b))!=-1){
+                        output.write(b,0,j);
+                    }
+                    output.flush();
+                    output.close();
+                    if("music".equals(type)){
+                        MediaFrm mediaFrm = new MediaFrm(storeFile.getName(),fileName);
+                    }
                 }
             }
             return true;

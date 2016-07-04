@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="JMF">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/lib/JMF" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="file://$PROJECT_DIR$/lib/JMF" recursive="false" />
+  </library>
+</component>
