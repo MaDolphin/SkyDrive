@@ -299,28 +299,30 @@ public class FilesServlet extends HttpServlet {
             Files files = filesDao.findFile(fileno);
             List<Files> filesList = filesDao.queryFileNoInPathByFileName(files.getUserNo(), path, files.getFileName());
 
-            Files paste = new Files();
-            paste.setFileType(files.getFileType());
-            paste.setDownloadPath(files.getDownloadPath());
-            paste.setFileFormat(files.getFileFormat());
-            paste.setFileMd5(files.getFileMd5());
-            paste.setUserNo(files.getUserNo());
-            paste.setFileStatus(1);
-            paste.setShareStatus(0);
-            paste.setFileName(files.getFileName());
 
-            if (path != 0) {
-                Files dir = filesDao.findFile(path);
-                paste.setFilePath(dir.getFilePath() + "/" + dir.getFileName());
-                paste.setSupFolder(dir.getFileNo());
-            } else {
-                paste.setFilePath("../" + files.getUserNo());
-                paste.setUserNo(files.getUserNo());
-            }
             if (filesList.size() != 0)
                 out.print("error");
-            else
+            else{
+                Files paste = new Files();
+                paste.setFileType(files.getFileType());
+                paste.setDownloadPath(files.getDownloadPath());
+                paste.setFileFormat(files.getFileFormat());
+                paste.setFileMd5(files.getFileMd5());
+                paste.setUserNo(files.getUserNo());
+                paste.setFileStatus(1);
+                paste.setShareStatus(0);
+                paste.setFileName(files.getFileName());
+
+                if (path != 0) {
+                    Files dir = filesDao.findFile(path);
+                    paste.setFilePath(dir.getFilePath() + "/" + dir.getFileNo());
+                    paste.setSupFolder(dir.getFileNo());
+                } else {
+                    paste.setFilePath("../" + files.getUserNo());
+                    paste.setUserNo(files.getUserNo());
+                }
                 filesDao.addFile(paste);
+            }
 
         }
 
@@ -360,8 +362,29 @@ public class FilesServlet extends HttpServlet {
             String name=request.getParameter("NewName");
             FilesDao filesDao = new FilesDao();
             Files files= filesDao.findFile(fileno);
-            files.setFileName(name);
-            filesDao.editFile(files);
+            List<Files> filesList=
+                    filesDao.queryFileNoInPathByFileName(files.getUserNo(),files.getSupFolder(),name);
+            if(filesList!=null&&filesList.size()!=0){
+                out.print("error");
+            }
+            else{
+                files.setFileName(name);
+                filesDao.editFile(files);
+            }
+        }
+
+        //·ÖÏíÎÄ¼þ
+        if ("share".equals(opttype)) {
+            int fileno = Integer.valueOf(request.getParameter("FileNo"));
+            FilesDao filesDao = new FilesDao();
+            Files files=filesDao.findFile(fileno);
+            if(files.getShareStatus()==0)
+                filesDao.enableShareFile(fileno);
+            else{
+                filesDao.disableShareFile(fileno);
+                out.print("disShare");
+            }
+
         }
         out.close();
     }

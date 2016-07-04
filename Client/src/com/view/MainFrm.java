@@ -181,15 +181,15 @@ public class MainFrm extends JFrame implements ActionListener {
         menu.add(new JMenuItem("粘贴")).addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //System.out.println(e.getSource());
-                if (fileno == 0) {
+                System.out.println(e.getSource());
+                if (copyno == 0) {
                     JOptionPane.showMessageDialog(mainpane, "请选择复制文件");
                 } else {
                     String result = dao.Paste("paste", copyno, nowfolder);
                     if (result.equals("error")) {
                         JOptionPane.showMessageDialog(mainpane, "有同名文件在本目录下，请先更改文件名");
                     } else {
-                        fileno = 0;
+                        copyno = 0;
                         dispFiles(dao.ListFiles("listfiles", userNo, nowfolder));
                         mainpane.repaint();
                     }
@@ -206,7 +206,7 @@ public class MainFrm extends JFrame implements ActionListener {
                         supfolder = 0;
                         nowfolder = 0;
                         path = "../" + userNo;
-                        System.out.println("folder:"+nowfolder+" sup:"+supfolder+" path:"+path);
+                        //System.out.println("folder:"+nowfolder+" sup:"+supfolder+" path:"+path);
                     }
                     else{
                         dispFiles(dao.ListFiles("listfiles", userNo, supfolder));
@@ -224,9 +224,9 @@ public class MainFrm extends JFrame implements ActionListener {
                             supfolder=0;
                             path =path.substring(0, path.lastIndexOf("/"));
                         }
-                        System.out.println("退出");
+                        /*System.out.println("退出");
                         System.out.println("folder:"+nowfolder+" sup:"+supfolder+" path:"+path);
-                        System.out.println();
+                        System.out.println();*/
                     }
                 }
             }
@@ -270,7 +270,7 @@ public class MainFrm extends JFrame implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //System.out.println(e.getSource());
-                String result = dao.Delete("delete", fileno);
+                String result = dao.Change("delete", fileno);
                 if (result.equals("error")) {
                     JOptionPane.showMessageDialog(mainpane, "删除出错");
                 } else {
@@ -297,6 +297,19 @@ public class MainFrm extends JFrame implements ActionListener {
                 }
             }
         });
+        menu.add(new JMenuItem("共享")).addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //System.out.println(e.getSource());
+                String result = dao.Change("share", fileno);
+                if (result.equals("disShare"))
+                    JOptionPane.showMessageDialog(mainpane, "取消分享");
+                else
+                    JOptionPane.showInputDialog(
+                            this,"http://localhost:8080/SkyDrive/servlet/ShareServlet?FileNo="+fileno);
+
+            }
+        });
         menu.add(new JMenuItem("重命名")).addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -304,6 +317,7 @@ public class MainFrm extends JFrame implements ActionListener {
                 RenameFrm frm=new RenameFrm(fileno);
                 frm.setSize(280,180);
                 frm.setVisible(true);
+
             }
         });
 
@@ -392,9 +406,9 @@ public class MainFrm extends JFrame implements ActionListener {
                         nowfolder = fileno;
                         path += "/" + fileno;
 
-                        System.out.println("进入");
+                        /*System.out.println("进入");
                         System.out.println("folder:"+nowfolder+" sup:"+supfolder+" path:"+path);
-                        System.out.println();
+                        System.out.println();*/
                         dispFiles(dao.ListFiles("listfiles", userNo, fileno));
                         mainpane.repaint();
                     }
@@ -427,6 +441,7 @@ public class MainFrm extends JFrame implements ActionListener {
                     if (e.isPopupTrigger()) {
                         JLabel src = (JLabel) (e.getSource());
                         //右键文件时，通过文件名、用户编号和所处文件夹来查询文件编号
+                        System.out.println(src.getText());
                         fileno = Integer.valueOf(dao.getFileNo("fileNo", userNo,
                                 src.getText().substring(0, src.getText().lastIndexOf(".")), nowfolder));
                         filename=src.getText();

@@ -30,9 +30,16 @@ public class RenameFrm extends JFrame{
         btn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dao.Rename("rename",fileno,text.getText());
-                jp.setVisible(false);
+                Btn_Ok();
             }
         });
+    }
+
+    public void Btn_Ok(){
+        String result=dao.Rename("rename",fileno,text.getText());
+        if(result.equals("error"))
+            JOptionPane.showMessageDialog(this,"ÃüÃûÖØ¸´£¬ÇëÐÞ¸Ä");
+        else
+            this.setVisible(false);
     }
 }

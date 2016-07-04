@@ -63,7 +63,9 @@ public class FilesDao {
         Transaction tran=session.beginTransaction();
         file.setCreatTime(new Date(System.currentTimeMillis()));
         session.saveOrUpdate(file);
+
         tran.commit();
+        session.close();
         return true;
     }
 
@@ -72,6 +74,8 @@ public class FilesDao {
         Transaction tran=session.beginTransaction();
         session.saveOrUpdate(file);
         tran.commit();
+
+        session.close();
         return true;
     }
 
@@ -120,6 +124,7 @@ public class FilesDao {
         query.setParameter("folder",folder);
         query.setParameter("filestatus",1);
         List<Files> list = query.list();
+        session.close();
         return list;
     }
 

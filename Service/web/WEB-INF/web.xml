@@ -16,6 +16,10 @@
         <servlet-class>com.servlet.DownloadServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>ShareServlet</servlet-name>
+        <servlet-class>com.servlet.ShareServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>UserServlet</servlet-name>
         <servlet-class>com.servlet.UserServlet</servlet-class>
     </servlet>
@@ -28,6 +32,10 @@
     <servlet-mapping>
         <servlet-name>DownloadServlet</servlet-name>
         <url-pattern>/servlet/DownloadServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ShareServlet</servlet-name>
+        <url-pattern>/servlet/ShareServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>UploadServlet</servlet-name>

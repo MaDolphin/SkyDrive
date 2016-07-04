@@ -121,8 +121,8 @@ public class Dao {
     }
 
 
-    //删除文件
-    public String Delete(String opttype,int fileno) {
+    //删除、共享文件
+    public String Change(String opttype,int fileno) {
         // 创建httppost
         HttpPost httppost = new HttpPost("http://localhost:8080/SkyDrive/file.action");
         // 创建参数队列
@@ -192,7 +192,7 @@ public class Dao {
 
 
     //重命名
-    public void Rename(String opttype,int fileno, String text) {
+    public String Rename(String opttype,int fileno, String text) {
         // 创建httppost
         HttpPost httppost = new HttpPost("http://localhost:8080/SkyDrive/file.action");
         // 创建参数队列
@@ -200,6 +200,7 @@ public class Dao {
         formparams.add(new BasicNameValuePair("FileNo", String.valueOf(fileno)));
         formparams.add(new BasicNameValuePair("NewName", String.valueOf(text)));
         formparams.add(new BasicNameValuePair("opttype", opttype));
+        return this.GetEntity(httppost, formparams);
     }
 
 
