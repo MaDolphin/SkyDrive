@@ -159,6 +159,7 @@ public class FilesDao {
         query.setParameter("filestatus",1);
         List<Files> list = query.list();
         return list;
+
     }
 
     public List<Files> queryAllDocFile(int userNo, int folder) {
