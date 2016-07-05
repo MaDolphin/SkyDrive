@@ -264,6 +264,9 @@ public class MainFrm extends JFrame implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 //System.out.println(e.getSource());
                 copyno = fileno;
+                String result=dao.CheckType("type",fileno);
+                if(result.equals("folder"))
+                    copyno=0;
             }
         });
         /*menu.add(new JMenuItem("Õ³Ìù")).addActionListener(new ActionListener() {

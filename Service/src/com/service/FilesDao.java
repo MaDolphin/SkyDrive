@@ -233,6 +233,14 @@ public class FilesDao {
         return list;
     }
 
+    public List<Files> queryFileInPath(String path){
+        Session session = HibernateSessionFactory.getSession();
+        Query query = session.createQuery("from Files f where f.filePath like '%"+path+"%'");
+        //query.setParameter("filepath",path);
+        List<Files> list = query.list();
+        return list;
+    }
+
 //	public static List<File> getFileList(String dir) {
 //		List<File> listFiles = new ArrayList<File>();
 //		File dirFile = new File(dir);

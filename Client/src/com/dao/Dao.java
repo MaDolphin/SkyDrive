@@ -330,4 +330,14 @@ public class Dao {
         formparams.add(new BasicNameValuePair("opttype", opttype));
         return this.GetEntity(httppost, formparams);
     }
+
+    public String CheckType(String opttype, int fileno) {
+        // 创建httppost
+        HttpPost httppost = new HttpPost("http://localhost:8080/SkyDrive/file.action");
+        // 创建参数队列
+        List<BasicNameValuePair> formparams = new ArrayList<BasicNameValuePair>();
+        formparams.add(new BasicNameValuePair("FileNo", String.valueOf(fileno)));
+        formparams.add(new BasicNameValuePair("opttype", opttype));
+        return this.GetEntity(httppost, formparams);
+    }
 }

@@ -330,8 +330,18 @@ public class FilesServlet extends HttpServlet {
         if ("delete".equals(opttype)) {
             int fileno = Integer.valueOf(request.getParameter("FileNo"));
             FilesDao filesDao = new FilesDao();
-            if (!filesDao.disableFile(fileno))
-                out.print("error");
+            Files files=filesDao.findFile(fileno);
+            if(files.getFileType()==1){
+                if (!filesDao.disableFile(fileno))
+                    out.print("error");
+            }
+            if(files.getFileType()==0){
+                List<Files> filesList=filesDao.queryFileInPath(files.getFilePath()+"/"+files.getFileNo());
+                for(Files files1:filesList){
+                    filesDao.disableFile(files1.getFileNo());
+                }
+                filesDao.disableFile(fileno);
+            }
         }
 
 		//新建文件夹
@@ -385,6 +395,15 @@ public class FilesServlet extends HttpServlet {
                 out.print("disShare");
             }
 
+        }
+
+        //查询文件类型
+        if ("type".equals(opttype)) {
+            int fileno = Integer.valueOf(request.getParameter("FileNo"));
+            FilesDao filesDao = new FilesDao();
+            Files files=filesDao.findFile(fileno);
+            if(files.getFileType()==0)
+                out.print("folder");
         }
 
         //搜索文件
