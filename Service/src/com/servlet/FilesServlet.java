@@ -16,6 +16,7 @@ import com.util.FileOperateUtil;
 
 public class FilesServlet extends HttpServlet {
 
+    FilesDao filesDao = new FilesDao();
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
@@ -23,7 +24,6 @@ public class FilesServlet extends HttpServlet {
         String opttype = request.getParameter("opttype");
         //查询文件夹下所有文件
         if ("listfiles".equals(opttype)) {
-            FilesDao filesDao = new FilesDao();
             response.setContentType("application/xml;charset=utf-8");
             int user = Integer.valueOf(request.getParameter("UserNo"));
             int path = Integer.valueOf(request.getParameter("SupFolder"));
@@ -49,7 +49,6 @@ public class FilesServlet extends HttpServlet {
             out.println("</files>");
         }
         if ("listAllfiles".equals(opttype)) {
-            FilesDao filesDao = new FilesDao();
             response.setContentType("application/xml;charset=utf-8");
             int user = Integer.valueOf(request.getParameter("UserNo"));
             int path = Integer.valueOf(request.getParameter("SupFolder"));
@@ -75,7 +74,6 @@ public class FilesServlet extends HttpServlet {
             out.println("</files>");
         }
         if ("listImgfiles".equals(opttype)) {
-            FilesDao filesDao = new FilesDao();
             response.setContentType("application/xml;charset=utf-8");
             int user = Integer.valueOf(request.getParameter("UserNo"));
             int path = Integer.valueOf(request.getParameter("SupFolder"));
@@ -101,7 +99,6 @@ public class FilesServlet extends HttpServlet {
             out.println("</files>");
         }
         if ("listDocfiles".equals(opttype)) {
-            FilesDao filesDao = new FilesDao();
             response.setContentType("application/xml;charset=utf-8");
             int user = Integer.valueOf(request.getParameter("UserNo"));
             int path = Integer.valueOf(request.getParameter("SupFolder"));
@@ -127,7 +124,6 @@ public class FilesServlet extends HttpServlet {
             out.println("</files>");
         }
         if ("listFilmfiles".equals(opttype)) {
-            FilesDao filesDao = new FilesDao();
             response.setContentType("application/xml;charset=utf-8");
             int user = Integer.valueOf(request.getParameter("UserNo"));
             int path = Integer.valueOf(request.getParameter("SupFolder"));
@@ -153,7 +149,6 @@ public class FilesServlet extends HttpServlet {
             out.println("</files>");
         }
         if ("listMusicfiles".equals(opttype)) {
-            FilesDao filesDao = new FilesDao();
             response.setContentType("application/xml;charset=utf-8");
             int user = Integer.valueOf(request.getParameter("UserNo"));
             int path = Integer.valueOf(request.getParameter("SupFolder"));
@@ -179,7 +174,6 @@ public class FilesServlet extends HttpServlet {
             out.println("</files>");
         }
         if ("listSharefiles".equals(opttype)) {
-            FilesDao filesDao = new FilesDao();
             response.setContentType("application/xml;charset=utf-8");
             int user = Integer.valueOf(request.getParameter("UserNo"));
             int path = Integer.valueOf(request.getParameter("SupFolder"));
@@ -205,7 +199,6 @@ public class FilesServlet extends HttpServlet {
             out.println("</files>");
         }
         if ("listDelfiles".equals(opttype)) {
-            FilesDao filesDao = new FilesDao();
             response.setContentType("application/xml;charset=utf-8");
             int user = Integer.valueOf(request.getParameter("UserNo"));
             int path = Integer.valueOf(request.getParameter("SupFolder"));
@@ -231,7 +224,6 @@ public class FilesServlet extends HttpServlet {
             out.println("</files>");
         }
         if ("checkmd5".equals(opttype)) {
-            FilesDao filesDao = new FilesDao();
             String hash = request.getParameter("Md5");
             if (filesDao.CheckMd5(hash)) {
                 out.println("true");
@@ -241,7 +233,6 @@ public class FilesServlet extends HttpServlet {
         }
         if ("addfile".equals(opttype)) {
             try {
-                FilesDao filesDao = new FilesDao();
                 String md5 = request.getParameter("Md5");
                 String fileRealName = request.getParameter("FileRealName");
                 int user = Integer.valueOf(request.getParameter("UserNo"));
@@ -285,7 +276,6 @@ public class FilesServlet extends HttpServlet {
             int user = Integer.valueOf(request.getParameter("UserNo"));
             int path = Integer.valueOf(request.getParameter("SupFolder"));
             String filename = request.getParameter("Filename");
-            FilesDao filesDao = new FilesDao();
             List<Files> files = filesDao.queryFileNoInPathByFileName(user, path, filename);
             if (files.size() != 0) {
                 out.println(files.get(0).getFileNo());
@@ -297,7 +287,6 @@ public class FilesServlet extends HttpServlet {
         if ("paste".equals(opttype)) {
             int fileno = Integer.valueOf(request.getParameter("FileNo"));
             int path = Integer.valueOf(request.getParameter("SupFolder"));
-            FilesDao filesDao = new FilesDao();
             Files files = filesDao.findFile(fileno);
             List<Files> filesList = filesDao.queryFileNoInPathByFileName(files.getUserNo(), path, files.getFileName());
 
@@ -331,7 +320,6 @@ public class FilesServlet extends HttpServlet {
         //删除文件
         if ("delete".equals(opttype)) {
             int fileno = Integer.valueOf(request.getParameter("FileNo"));
-            FilesDao filesDao = new FilesDao();
             Files files=filesDao.findFile(fileno);
             if(files.getFileType()==1){
                 if (!filesDao.disableFile(fileno))
@@ -350,7 +338,6 @@ public class FilesServlet extends HttpServlet {
         if("newfolder".equals(opttype)){
 			int user=Integer.valueOf(request.getParameter("UserNo"));
 			int path=Integer.valueOf(request.getParameter("SupFolder"));
-			FilesDao filesDao=new FilesDao();
 
 			Files files=new Files();
 			files.setUserNo(user);
@@ -372,7 +359,6 @@ public class FilesServlet extends HttpServlet {
         if ("rename".equals(opttype)) {
             int fileno = Integer.valueOf(request.getParameter("FileNo"));
             String name=request.getParameter("NewName");
-            FilesDao filesDao = new FilesDao();
             Files files= filesDao.findFile(fileno);
             List<Files> filesList= filesDao.queryFileNoInPathByFileName(files.getUserNo(),files.getSupFolder(),name);
             if(filesList!=null&&filesList.size()!=0){
@@ -387,7 +373,6 @@ public class FilesServlet extends HttpServlet {
         //分享文件
         if ("share".equals(opttype)) {
             int fileno = Integer.valueOf(request.getParameter("FileNo"));
-            FilesDao filesDao = new FilesDao();
             Files files=filesDao.findFile(fileno);
             if(files.getShareStatus()==0)
                 filesDao.enableShareFile(fileno);
@@ -401,7 +386,6 @@ public class FilesServlet extends HttpServlet {
         //查询文件类型
         if ("type".equals(opttype)) {
             int fileno = Integer.valueOf(request.getParameter("FileNo"));
-            FilesDao filesDao = new FilesDao();
             Files files=filesDao.findFile(fileno);
             if(files.getFileType()==0)
                 out.print("folder");
@@ -411,7 +395,6 @@ public class FilesServlet extends HttpServlet {
         if ("search".equals(opttype)) {
             int user = Integer.valueOf(request.getParameter("UserNo"));
             String filename=request.getParameter("FileName");
-            FilesDao filesDao = new FilesDao();
             List<Files>filesList=filesDao.queryLikeFileInAllPath(user,filename);
             out.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
             out.println("<files>");
