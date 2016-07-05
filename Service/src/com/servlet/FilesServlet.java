@@ -17,6 +17,8 @@ import com.util.FileOperateUtil;
 public class FilesServlet extends HttpServlet {
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
         String opttype = request.getParameter("opttype");
         //查询文件夹下所有文件
@@ -353,7 +355,7 @@ public class FilesServlet extends HttpServlet {
 			Files files=new Files();
 			files.setUserNo(user);
 			files.setFileType(0);
-			files.setFileName("999");
+			files.setFileName("新建文件夹");
 			files.setSupFolder(path);
 			files.setFileStatus(1);
             if(path==0)

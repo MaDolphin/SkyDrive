@@ -36,6 +36,8 @@ public class DownloadServlet extends HttpServlet {
 
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
         int fileNo = Integer.valueOf(request.getParameter("fileNo"));
         Files files = filesDao.findFile(fileNo);

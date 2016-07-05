@@ -66,6 +66,7 @@ public class Dao {
                 e.printStackTrace();
             }
         }
+        System.out.println(rvalue);
         return rvalue;
     }
 

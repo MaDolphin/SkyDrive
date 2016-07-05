@@ -17,8 +17,9 @@ public class UserServlet extends HttpServlet {
     UserDao userDao = new UserDao();
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        response.setContentType("text/html;charset=utf-8");
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        //response.setContentType("text/html;charset=utf-8");
         PrintWriter out = response.getWriter();
         String uid=request.getParameter("uid");
         String upwd=request.getParameter("upwd");

@@ -38,6 +38,8 @@ public class UploadServlet extends HttpServlet {
 
     @SuppressWarnings({"unchecked", "deprecation"})
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
         File file1 = null;
         String md5 = null;
         PrintWriter out = response.getWriter();

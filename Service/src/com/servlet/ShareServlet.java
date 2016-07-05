@@ -33,6 +33,8 @@ public class ShareServlet extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
         int fileno = Integer.valueOf(request.getParameter("FileNo"));
 
         //System.out.println(fileno);
@@ -46,12 +48,10 @@ public class ShareServlet extends HttpServlet {
             File f = new File(path + files.getDownloadPath());
             if (f.exists()) {
                 FileInputStream fis = new FileInputStream(f);
-                String filename = URLEncoder.encode(f.getName(), "utf-8"); //解决中文文件名下载后乱码的问题
+                String filename = URLEncoder.encode(files.getFileName() + "." + files.getFileFormat(), "utf-8"); //解决中文文件名下载后乱码的问题
                 byte[] b = new byte[fis.available()];
                 fis.read(b);
-                response.setCharacterEncoding("utf-8");
-                response.setHeader("Content-Disposition", "attachment; filename=" +
-                        files.getFileName() + "." + files.getFileFormat() + "");
+                response.setHeader("Content-Disposition", "attachment; filename=" + filename + "");
                 //获取响应报文输出流对象
                 ServletOutputStream out = response.getOutputStream();
                 //输出
