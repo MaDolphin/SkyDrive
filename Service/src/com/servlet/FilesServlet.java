@@ -388,7 +388,7 @@ public class FilesServlet extends HttpServlet {
         }
 
         //ËÑË÷ÎÄ¼þ
-        if ("share".equals(opttype)) {
+        if ("search".equals(opttype)) {
             int user = Integer.valueOf(request.getParameter("UserNo"));
             String filename=request.getParameter("FileName");
             FilesDao filesDao = new FilesDao();

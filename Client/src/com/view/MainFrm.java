@@ -32,8 +32,7 @@ public class MainFrm extends JFrame implements ActionListener {
     private JTree tree = null;
     private JPanel rightpane = new JPanel();
     private JPanel mainpane = new JPanel();
-    private JTextField txt = new JTextField();
-    private JButton btn = new JButton("搜索");
+    private JTextField searchText = new JTextField("",20);
     private Dao dao = new Dao();
     private int userNo, fileno, copyno, nowfolder;
     private int supfolder = 0;
@@ -61,16 +60,6 @@ public class MainFrm extends JFrame implements ActionListener {
 
         initTree();
         initToolBar();
-        btn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (txt.getText() .equals("")) {
-                    String result = dao.Search("search", userNo, txt.getText());
-                    dispFiles(result);
-                    mainpane.repaint();
-                }
-            }
-        });
         JSplitPane jsplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JScrollPane(tree), rightpane);
         jsplit.setDividerLocation(300);
         jsplit.setDividerSize(2);
@@ -93,16 +82,18 @@ public class MainFrm extends JFrame implements ActionListener {
 
     private void initToolBar() {
         JPanel tool = new JPanel();
+        JPanel search = new JPanel();
         tool.setLayout(new FlowLayout(FlowLayout.CENTER));
         JToolBar toolbar = new JToolBar();// 建立工具栏
         JButton addFolderButton = new JButton("新建文件夹", getButtonIcon("/icons/cloud (5).png"));
         JButton addFileButton = new JButton("上传文件", getButtonIcon("/icons/cloud (18).png"));
         JButton refreshButton = new JButton("刷新", getButtonIcon("/icons/cloud (2).png"));
+        JButton searchButton = new JButton("搜索",getButtonIcon("/icons/cloud (3).png"));
         toolbar.add(addFolderButton);
         toolbar.add(addFileButton);
         toolbar.add(refreshButton);
-        toolbar.add(btn);
-        toolbar.add(txt);
+        toolbar.add(searchText);
+        toolbar.add(searchButton);
         toolbar.setFloatable(false);
         tool.add(toolbar);
         rightpane.add(tool, BorderLayout.NORTH);
@@ -143,6 +134,16 @@ public class MainFrm extends JFrame implements ActionListener {
                     } catch (NoSuchAlgorithmException e1) {
                         e1.printStackTrace();
                     }
+                }
+            }
+        });
+        searchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!searchText.getText().equals("")) {
+                    String result = dao.Search("search", userNo, searchText.getText());
+                    dispFiles(result);
+                    mainpane.repaint();
                 }
             }
         });
@@ -351,6 +352,21 @@ public class MainFrm extends JFrame implements ActionListener {
                             MediaFrm mediaFrm = new MediaFrm(filePath,filename);
                             mediaFrm.setSize(280, 180);
                             mediaFrm.setVisible(true);
+                        }
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    } catch (Exception e1) {
+                        e1.printStackTrace();
+                    }
+                }
+                if(fileformat.equals("jpg") || fileformat.equals("png")){
+                    try {
+                        String filePath = dao.MediaDownload("download", fileno, filename, null,1);
+                        if(filePath != null){
+                            JFrame.setDefaultLookAndFeelDecorated(true);
+                            ImageViewer imageViewer = new ImageViewer(filePath);
+                            imageViewer.setSize(1024, 768);
+                            imageViewer.setVisible(true);
                         }
                     } catch (IOException e1) {
                         e1.printStackTrace();

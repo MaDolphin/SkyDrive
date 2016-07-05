@@ -226,9 +226,9 @@ public class FilesDao {
 
     public List<Files> queryLikeFileInAllPath(int userNo, String fileName){
         Session session = HibernateSessionFactory.getSession();
-        Query query = session.createQuery("from Files f where f.userNo=:userNo and f.fileName like %:fileName%");
+        Query query = session.createQuery("from Files f where f.userNo=:userNo and f.fileName like '%"+fileName+"%'");
         query.setParameter("userNo",userNo);
-        query.setParameter("fileName",fileName);
+        //query.setParameter("fileName",fileName);
         List<Files> list = query.list();
         return list;
     }
