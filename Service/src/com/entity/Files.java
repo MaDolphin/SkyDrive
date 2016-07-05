@@ -1,9 +1,6 @@
 package com.entity;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Date;
 
 /**
@@ -26,6 +23,7 @@ public class Files {
 
     @Id
     @Column(name = "FileNo", nullable = false)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public int getFileNo() {
         return fileNo;
     }

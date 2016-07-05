@@ -478,6 +478,10 @@ public class MainFrm extends JFrame implements ActionListener {
         //创建文件的lbl
         for (String fname : filenames) {
             String imgpath = "/icons/" + fname.substring(fname.lastIndexOf(".") + 1).toUpperCase() + ".png";
+
+            if(JLabel.class.getResource(imgpath) == null){
+                imgpath = "/icons/Default.png";
+            }
             //String imgpath="/icons/PPT.png";
             final JLabel lbl = new JLabel();
             //lbl.setSize(WIDTH,HEIGHT);

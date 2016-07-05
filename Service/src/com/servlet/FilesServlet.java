@@ -268,6 +268,7 @@ public class FilesServlet extends HttpServlet {
                     out.println("success");
                 }
             } catch (Exception e) {
+                e.printStackTrace();
                 out.println("error");
             }
         }
