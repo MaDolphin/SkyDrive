@@ -8,8 +8,10 @@ import com.util.HibernateSessionFactory;
  * Created by xfcq on 2016/7/2.
  */
 public class UserDao {
+
+    private Session session = HibernateSessionFactory.getSession();
+
     public List<User> queryAllUser(){
-        Session session = HibernateSessionFactory.getSession();
         Query query = session.createQuery("from User");
         List<User> list = query.list();
         return list;
@@ -17,7 +19,6 @@ public class UserDao {
 
     public Boolean CheckUser(String name,String pwd){
         boolean flag=false;
-        Session session = HibernateSessionFactory.getSession();
         Query query = session.createQuery("from User where userName='"+name+"'");
         List<User> list = query.list();
         if(list!=null)
@@ -27,7 +28,6 @@ public class UserDao {
     }
 
     public User findUser(String name,String pwd){
-        Session session = HibernateSessionFactory.getSession();
         Query query = session.createQuery("from User a where a.userName=? and a.userPwd=?");
         query.setParameter(0,name);
         query.setParameter(1,pwd);

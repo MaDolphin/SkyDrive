@@ -374,8 +374,7 @@ public class FilesServlet extends HttpServlet {
             String name=request.getParameter("NewName");
             FilesDao filesDao = new FilesDao();
             Files files= filesDao.findFile(fileno);
-            List<Files> filesList=
-                    filesDao.queryFileNoInPathByFileName(files.getUserNo(),files.getSupFolder(),name);
+            List<Files> filesList= filesDao.queryFileNoInPathByFileName(files.getUserNo(),files.getSupFolder(),name);
             if(filesList!=null&&filesList.size()!=0){
                 out.print("error");
             }

@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
  * Created by çå on 2016/7/4.
  */
 public class RenameFrm extends JFrame{
-    private JLabel lbl=new JLabel("Rename");
+    private JLabel lbl=new JLabel("ÖØÃüÃû£º");
     private JTextField text=new JTextField();
     private JButton btn=new JButton("OK");
     private Dao dao=new Dao();
