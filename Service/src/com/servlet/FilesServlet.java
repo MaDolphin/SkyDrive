@@ -416,6 +416,7 @@ public class FilesServlet extends HttpServlet {
             }
             out.println("</files>");
         }
+
         out.close();
     }
 
