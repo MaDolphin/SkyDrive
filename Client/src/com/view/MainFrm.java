@@ -22,6 +22,7 @@ import java.awt.dnd.DropTargetDropEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
@@ -72,6 +73,17 @@ public class MainFrm extends JFrame implements ActionListener {
         dispFiles(rvalue);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         drag();//启用拖拽
+        this.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                Properties prop = System.getProperties();
+                String path = "C:\\Users\\"+prop.getProperty("user.name")+"\\Downloads"+"\\temp";
+                File file =new File(path);
+                if (file .exists()  && file .isDirectory())
+                {
+                    deleteDirectory(path);
+                }
+            }
+        });
     }
 
     private void initMenu() {
@@ -94,7 +106,7 @@ public class MainFrm extends JFrame implements ActionListener {
         JButton addFolderButton = new JButton("新建文件夹", getButtonIcon("/icons/cloud (5).png"));
         JButton addFileButton = new JButton("上传文件", getButtonIcon("/icons/cloud (18).png"));
         JButton refreshButton = new JButton("刷新", getButtonIcon("/icons/cloud (2).png"));
-        JButton searchButton = new JButton("搜索", getButtonIcon("/icons/cloud (3).png"));
+        JButton searchButton = new JButton("搜索",getButtonIcon("/icons/cloud (3).png"));
         toolbar.add(addFolderButton);
         toolbar.add(addFileButton);
         toolbar.add(refreshButton);
@@ -388,6 +400,7 @@ public class MainFrm extends JFrame implements ActionListener {
         return menu;
     }
 
+    //树点击事件
     private void tree_clicked(String event) {
         if ("我的云盘".equals(event)) {
             this.dispFiles(dao.ListFiles("listfiles", this.userNo, 0));
@@ -422,6 +435,7 @@ public class MainFrm extends JFrame implements ActionListener {
         path = "../" + userNo;
     }
 
+    //显示文件
     private void dispFiles(String rvalue) {
         final java.util.List<String> filenames = XmlHelper.xmlElements(rvalue, "file");
         java.util.List<String> dirnames = XmlHelper.xmlElements(rvalue, "dir");
@@ -534,16 +548,12 @@ public class MainFrm extends JFrame implements ActionListener {
         return imageicon;
     }
 
-    /**
-     * 获取图片图标
-     */
+    //获取图片图标
     public ImageIcon getImageIcon(String url) {
         return new ImageIcon(getURL(url));
     }
 
-    /**
-     * 获得文件的绝对地址
-     */
+    //获得文件的绝对地址
     public URL getURL(String path) {
         return "".getClass().getResource(path);
     }
@@ -554,6 +564,52 @@ public class MainFrm extends JFrame implements ActionListener {
         frm.setSize(1200, 600);
         frm.setVisible(true);
 
+    }
+
+    //删除文件夹
+    public boolean deleteDirectory(String sPath) {
+        //如果sPath不以文件分隔符结尾，自动添加文件分隔符
+        if (!sPath.endsWith(File.separator)) {
+            sPath = sPath + File.separator;
+        }
+        File dirFile = new File(sPath);
+        //如果dir对应的文件不存在，或者不是一个目录，则退出
+        if (!dirFile.exists() || !dirFile.isDirectory()) {
+            return false;
+        }
+        boolean flag = true;
+        //删除文件夹下的所有文件(包括子目录)
+        File[] files = dirFile.listFiles();
+        for (int i = 0; i < files.length; i++) {
+            //删除子文件
+            if (files[i].isFile()) {
+                flag = deleteFile(files[i].getAbsolutePath());
+                if (!flag) break;
+            } //删除子目录
+            else {
+                flag = deleteDirectory(files[i].getAbsolutePath());
+                if (!flag) break;
+            }
+        }
+        if (!flag) return false;
+        //删除当前目录
+        if (dirFile.delete()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    //删除文件
+    public boolean deleteFile(String sPath) {
+        boolean flag = false;
+        File file = new File(sPath);
+        // 路径为文件且不为空则进行删除
+        if (file.isFile() && file.exists()) {
+            file.delete();
+            flag = true;
+        }
+        return flag;
     }
 
     @Override

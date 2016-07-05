@@ -13,10 +13,12 @@ import org.apache.http.util.EntityUtils;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import com.dao.*;
 public class LoginFrm  extends JFrame{
@@ -34,6 +36,16 @@ public class LoginFrm  extends JFrame{
         jp.add(lblID);jp.add(txtID);
         jp.add(lblPwd);jp.add(txtPwd);
         jp.add(btnOK);jp.add(btnCancel);
+
+        Properties prop = System.getProperties();
+        String path = "C:\\Users\\"+prop.getProperty("user.name")+"\\Downloads"+"\\temp";
+        File file =new File(path);
+        //如果文件夹不存在则创建
+        if (!file .exists()  && !file .isDirectory())
+        {
+            file .mkdir();
+        }
+
         //btnOK.setIcon(new ImageIcon(JButton.class
         //    .getResource("/images/2-1209221U445-50.png")));// 为按钮增加图标
         btnOK.addActionListener(new ActionListener(){
