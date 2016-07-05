@@ -14,7 +14,7 @@ import java.io.File;
  * Created by xfcq on 2016/7/5.
  */
 public class MediaFrm extends JFrame {
-    private JLabel lbl=new JLabel("File Name:");
+    private JLabel lbl=new JLabel("ÎÄ¼þÃû:");
     private JTextField text=new JTextField("",20);
     private JButton btn=new JButton("Stop");
     private JPanel jp;
@@ -24,8 +24,8 @@ public class MediaFrm extends JFrame {
         this.filePath=filePath;
         jp=(JPanel)this.getContentPane();
         jp.setLayout(null);
-        lbl.setBounds(40,40,100,30);
-        text.setBounds(120,40,80,30);
+        lbl.setBounds(20,40,80,30);
+        text.setBounds(80,40,150,30);
         btn.setBounds(80,100,80,30);
         text.setText(filename);
         jp.add(lbl);
