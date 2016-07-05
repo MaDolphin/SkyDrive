@@ -62,7 +62,7 @@ public class FilesDao {
         file.setCreatTime(new Date(System.currentTimeMillis()));
         session.saveOrUpdate(file);
         tran.commit();
-        session.flush();
+        //session.flush();
         return true;
     }
 

@@ -35,10 +35,11 @@ import java.util.Properties;
  */
 public class Dao {
 
+    private CloseableHttpClient httpclient = HttpClients.createDefault();
+
     private String GetEntity( HttpPost httppost,List<BasicNameValuePair> formparams ){
         String rvalue="";
         // 创建默认的httpClient实例.
-        CloseableHttpClient httpclient = HttpClients.createDefault();
         UrlEncodedFormEntity uefEntity;
         try {
             uefEntity = new UrlEncodedFormEntity(formparams, "UTF-8");
@@ -49,6 +50,7 @@ public class Dao {
                 if (entity != null) {
                     rvalue= EntityUtils.toString(entity, "UTF-8");
                 }
+                EntityUtils.consume(uefEntity);
             } finally {
                 response.close();
             }
@@ -58,15 +60,7 @@ public class Dao {
             e1.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            // 关闭连接,释放资源
-            try {
-                httpclient.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
-
         return rvalue;
     }
 
@@ -176,7 +170,7 @@ public class Dao {
     public Boolean DownMethod(String downpath,String savepath,String fileName) throws IOException{
         System.out.println(savepath);
         try{
-            HttpClient httpclient = new DefaultHttpClient();
+            //HttpClient httpclient = new DefaultHttpClient();
             HttpPost post = new HttpPost(downpath);
             HttpResponse response = httpclient.execute(post);
             if(HttpStatus.SC_OK==response.getStatusLine().getStatusCode()){
@@ -262,7 +256,6 @@ public class Dao {
 
     public String FileUpload(String hash,String filePath)throws IOException, NoSuchAlgorithmException {
         String rvalue="";
-        CloseableHttpClient httpClient = HttpClients.createDefault();
         try {
             // 把一个普通参数和文件上传给下面这个地址 是一个servlet
             HttpPost httpPost = new HttpPost("http://localhost:8080/SkyDrive/servlet/UploadServlet");
@@ -282,7 +275,7 @@ public class Dao {
 
 //            System.out.println("发起请求的页面地址 " + httpPost.getRequestLine());
             // 发起请求 并返回请求的响应
-            CloseableHttpResponse response = httpClient.execute(httpPost);
+            CloseableHttpResponse response = httpclient.execute(httpPost);
             try {
 //                System.out.println("----------------------------------------");
 //                // 打印响应状态
@@ -298,7 +291,7 @@ public class Dao {
                 response.close();
             }
         } finally {
-            httpClient.close();
+            //httpClient.close();
         }
         return rvalue;
     }
@@ -340,5 +333,14 @@ public class Dao {
         formparams.add(new BasicNameValuePair("FileNo", String.valueOf(fileno)));
         formparams.add(new BasicNameValuePair("opttype", opttype));
         return this.GetEntity(httppost, formparams);
+    }
+
+    public void CloseHttpClient(){
+        try {
+            httpclient.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 }

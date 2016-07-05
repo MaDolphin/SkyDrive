@@ -41,9 +41,9 @@ public class LoginFrm  extends JFrame{
         String path = "C:\\Users\\"+prop.getProperty("user.name")+"\\Downloads"+"\\temp";
         File file =new File(path);
         //如果文件夹不存在则创建
-        if (!file .exists()  && !file .isDirectory())
+        if (!file.exists()  && !file.isDirectory())
         {
-            file .mkdir();
+            file.mkdir();
         }
 
         //btnOK.setIcon(new ImageIcon(JButton.class
@@ -81,7 +81,7 @@ public class LoginFrm  extends JFrame{
             rvalue = rvalue.substring(0, rvalue.length() - 2);
             this.setVisible(false);
             JFrame.setDefaultLookAndFeelDecorated(true);
-            MainFrm frm=new MainFrm(rvalue,userNo,0);
+            MainFrm frm=new MainFrm(rvalue,userNo,0,dao);
             frm.setSize(1200,600);
             frm.setVisible(true);
         }

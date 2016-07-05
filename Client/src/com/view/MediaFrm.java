@@ -15,7 +15,7 @@ import java.io.File;
  */
 public class MediaFrm extends JFrame {
     private JLabel lbl=new JLabel("File Name:");
-    private JTextField text=new JTextField();
+    private JTextField text=new JTextField("",20);
     private JButton btn=new JButton("Stop");
     private JPanel jp;
     private String filePath;
@@ -49,7 +49,7 @@ public class MediaFrm extends JFrame {
     public static void main(String[] args) throws Exception {
         JFileChooser jfc = new JFileChooser();
         jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        jfc.showDialog(new JLabel(), "选择上传文件");
+        jfc.showDialog(new JLabel(), "选择文件");
         File file = jfc.getSelectedFile();
         File soundFile = new File(file.getAbsolutePath());
         MediaFrm mediaFrm = new MediaFrm(file.getAbsolutePath(),"111.mp3");
