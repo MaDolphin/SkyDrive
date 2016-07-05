@@ -14,6 +14,11 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
 import java.awt.*;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetAdapter;
+import java.awt.dnd.DropTargetDropEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -32,7 +37,7 @@ public class MainFrm extends JFrame implements ActionListener {
     private JTree tree = null;
     private JPanel rightpane = new JPanel();
     private JPanel mainpane = new JPanel();
-    private JTextField searchText = new JTextField("",20);
+    private JTextField searchText = new JTextField("", 20);
     private Dao dao = new Dao();
     private int userNo, fileno, copyno, nowfolder;
     private int supfolder = 0;
@@ -66,6 +71,7 @@ public class MainFrm extends JFrame implements ActionListener {
         this.getContentPane().add(jsplit);
         dispFiles(rvalue);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        drag();//启用拖拽
     }
 
     private void initMenu() {
@@ -88,7 +94,7 @@ public class MainFrm extends JFrame implements ActionListener {
         JButton addFolderButton = new JButton("新建文件夹", getButtonIcon("/icons/cloud (5).png"));
         JButton addFileButton = new JButton("上传文件", getButtonIcon("/icons/cloud (18).png"));
         JButton refreshButton = new JButton("刷新", getButtonIcon("/icons/cloud (2).png"));
-        JButton searchButton = new JButton("搜索",getButtonIcon("/icons/cloud (3).png"));
+        JButton searchButton = new JButton("搜索", getButtonIcon("/icons/cloud (3).png"));
         toolbar.add(addFolderButton);
         toolbar.add(addFileButton);
         toolbar.add(refreshButton);
@@ -264,9 +270,9 @@ public class MainFrm extends JFrame implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 //System.out.println(e.getSource());
                 copyno = fileno;
-                String result=dao.CheckType("type",fileno);
-                if(result.equals("folder"))
-                    copyno=0;
+                String result = dao.CheckType("type", fileno);
+                if (result.equals("folder"))
+                    copyno = 0;
             }
         });
         /*menu.add(new JMenuItem("粘贴")).addActionListener(new ActionListener() {
@@ -347,12 +353,12 @@ public class MainFrm extends JFrame implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 int splitIndex = filename.lastIndexOf(".");
                 String fileformat = filename.substring(splitIndex + 1);
-                if(fileformat.equals("mp3")){
+                if (fileformat.equals("mp3")) {
                     try {
-                        String filePath = dao.MediaDownload("download", fileno, filename, null,1);
-                        if(filePath != null){
+                        String filePath = dao.MediaDownload("download", fileno, filename, null, 1);
+                        if (filePath != null) {
                             JFrame.setDefaultLookAndFeelDecorated(true);
-                            MediaFrm mediaFrm = new MediaFrm(filePath,filename);
+                            MediaFrm mediaFrm = new MediaFrm(filePath, filename);
                             mediaFrm.setSize(280, 180);
                             mediaFrm.setVisible(true);
                         }
@@ -362,10 +368,10 @@ public class MainFrm extends JFrame implements ActionListener {
                         e1.printStackTrace();
                     }
                 }
-                if(fileformat.equals("jpg") || fileformat.equals("png")){
+                if (fileformat.equals("jpg") || fileformat.equals("png")) {
                     try {
-                        String filePath = dao.MediaDownload("download", fileno, filename, null,1);
-                        if(filePath != null){
+                        String filePath = dao.MediaDownload("download", fileno, filename, null, 1);
+                        if (filePath != null) {
                             JFrame.setDefaultLookAndFeelDecorated(true);
                             ImageViewer imageViewer = new ImageViewer(filePath);
                             imageViewer.setSize(1024, 768);
@@ -479,7 +485,7 @@ public class MainFrm extends JFrame implements ActionListener {
         for (String fname : filenames) {
             String imgpath = "/icons/" + fname.substring(fname.lastIndexOf(".") + 1).toUpperCase() + ".png";
 
-            if(JLabel.class.getResource(imgpath) == null){
+            if (JLabel.class.getResource(imgpath) == null) {
                 imgpath = "/icons/Default.png";
             }
             //String imgpath="/icons/PPT.png";
@@ -553,5 +559,53 @@ public class MainFrm extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
+    }
+
+    public void drag()//定义的拖拽方法
+    {
+        //panel表示要接受拖拽的控件
+        new DropTarget(mainpane, DnDConstants.ACTION_COPY_OR_MOVE, new DropTargetAdapter() {
+            @Override
+            public void drop(DropTargetDropEvent dtde)//重写适配器的drop方法
+            {
+                try {
+                    if (dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor))//如果拖入的文件格式受支持
+                    {
+                        dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);//接收拖拽来的数据
+                        List<File> list = (List<File>)
+                                (dtde.getTransferable().getTransferData(DataFlavor.javaFileListFlavor));
+                        String temp = "";
+                        for (File file : list)
+                            //temp += file.getAbsolutePath() + ";\n";
+                            if (file.isFile()) {
+                                try {
+                                    String result = dao.Upload(file.getName(),
+                                            file.getAbsolutePath(), userNo, nowfolder, path);
+                                    if (result.equals("error")) {
+                                        JOptionPane.showMessageDialog(null, "上传文件失败!");
+                                    }
+                                    if (result.equals("success")) {
+                                        JOptionPane.showMessageDialog(null, "上传文件成功!");
+                                    }
+                                    if (result.equals("exist")) {
+                                        JOptionPane.showMessageDialog(null, "该文件已存在！");
+                                    }
+                                    dispFiles(dao.ListFiles("listfiles", userNo, nowfolder));
+                                    mainpane.repaint();
+                                } catch (IOException e1) {
+                                    e1.printStackTrace();
+                                } catch (NoSuchAlgorithmException e1) {
+                                    e1.printStackTrace();
+                                }
+                            }
+                        dtde.dropComplete(true);//指示拖拽操作已完成
+                    } else {
+                        dtde.rejectDrop();//否则拒绝拖拽来的数据
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 }

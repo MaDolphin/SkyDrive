@@ -42,7 +42,7 @@ public class ShareServlet extends HttpServlet {
         path = path.substring(0, path.lastIndexOf("\\"));
         //System.out.print(path);
         Files files = filesDao.findFile(fileno);
-        if (files.getShareStatus() == 0) {
+        if (files.getShareStatus() == 0||files.getFileType()==0) {
             response.getWriter().println("<script>alert('File is not shared£¡')</script>");
         } else {
             File f = new File(path + files.getDownloadPath());
