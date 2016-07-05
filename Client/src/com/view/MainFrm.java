@@ -401,7 +401,7 @@ public class MainFrm extends JFrame implements ActionListener {
         if ("图片".equals(event)) {
             this.dispFiles(dao.ListFiles("listImgfiles", this.userNo, 0));
         }
-        if ("文件".equals(event)) {
+        if ("文档".equals(event)) {
             this.dispFiles(dao.ListFiles("listDocfiles", this.userNo, 0));
         }
         if ("视频".equals(event)) {

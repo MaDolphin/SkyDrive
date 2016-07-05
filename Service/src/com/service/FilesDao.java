@@ -155,11 +155,8 @@ public class FilesDao {
     }
 
     public List<Files> queryAllDocFile(int userNo, int folder) {
-//        Query query = session.createQuery("from Files f where f.userNo=:userNo and f.fileStatus=:filestatus and f.fileType = 1" +
-//                " and (f.fileFormat = 'doc' or f.fileFormat = 'docx' or f.fileFormat = 'xls' or f.fileFormat = 'xlsx' or f.fileFormat = 'ppt' or f.fileFormat = 'pptx' or f.fileFormat = 'txt')" +
-//                " order by f.fileFormat,f.fileNo");
         Query query = session.createQuery("from Files f where f.userNo=:userNo and f.fileStatus=:filestatus and f.fileType = 1" +
-                " and (f.fileFormat = 'doc' or f.fileFormat = 'docx' or f.fileFormat = 'txt')" +
+                " and (f.fileFormat = 'doc' or f.fileFormat = 'docx' or f.fileFormat = 'xls' or f.fileFormat = 'xlsx' or f.fileFormat = 'ppt' or f.fileFormat = 'pptx' or f.fileFormat = 'txt')" +
                 " order by f.fileFormat,f.fileNo");
         query.setParameter("userNo", userNo);
         query.setParameter("filestatus", 1);
