@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="dataSourceStorage">
+  <data-source name="MySQL - SkyDrive@121.42.197.31" uuid="45432fcd-b8e2-4941-af46-0e6952aba69d">
+    <database-info product="MySQL" version="5.5.44-MariaDB" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.38 ( Revision: fe541c166cec739c74cc727c5da96c1028b4834a )">
+      <extra-name-characters>#@</extra-name-characters>
+      <identifier-quote-string>`</identifier-quote-string>
+    </database-info>
+    <case-sensitivity plain-identifiers="exact" quoted-identifiers="exact"/>
+    <database-model serializer="dbm" rdbms="MYSQL" format-version="2.5">
+      <schema id="1" name="SkyDrive"/>
+      <table id="2" parent="1" name="Files"/>
+      <table id="3" parent="1" name="User"/>
+      <column id="4" parent="2" name="FileNo">
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+        <sequence-identity>1</sequence-identity>
+      </column>
+      <column id="5" parent="2" name="FileName">
+        <data-type>varchar(100)</data-type>
+      </column>
+      <column id="6" parent="2" name="UserNo">
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="7" parent="2" name="FileFormat">
+        <data-type>varchar(10)</data-type>
+      </column>
+      <column id="8" parent="2" name="FileType">
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="9" parent="2" name="FileMD5">
+        <data-type>varchar(40)</data-type>
+      </column>
+      <column id="10" parent="2" name="SupFolder">
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="11" parent="2" name="FilePath">
+        <data-type>varchar(150)</data-type>
+      </column>
+      <column id="12" parent="2" name="DownloadPath">
+        <data-type>varchar(150)</data-type>
+      </column>
+      <column id="13" parent="2" name="CreatTime">
+        <data-type>datetime</data-type>
+      </column>
+      <column id="14" parent="2" name="FileStatus">
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="15" parent="2" name="ShareStatus">
+        <data-type>int(11)</data-type>
+      </column>
+      <key id="16" parent="2" name="PRIMARY">
+        <columns>FileNo</columns>
+        <primary>1</primary>
+      </key>
+      <column id="17" parent="3" name="UserNo">
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+        <sequence-identity>1</sequence-identity>
+      </column>
+      <column id="18" parent="3" name="UserName">
+        <data-type>varchar(20)</data-type>
+      </column>
+      <column id="19" parent="3" name="UserPwd">
+        <data-type>varchar(20)</data-type>
+      </column>
+      <column id="20" parent="3" name="UserStatus">
+        <data-type>int(11)</data-type>
+      </column>
+      <key id="21" parent="3" name="PRIMARY">
+        <columns>UserNo</columns>
+        <primary>1</primary>
+      </key>
+    </database-model>
+  </data-source>
+</component>
